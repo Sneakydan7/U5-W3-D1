@@ -1,6 +1,7 @@
 package com.example.U5W3D1.entities;
 
 import com.example.U5W3D1.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class Employee implements UserDetails {
     private Role role;
 
     @ToString.Exclude
+    @JsonIgnore
     @OneToMany(mappedBy = "employee", orphanRemoval = true)
     private Set<Device> devices = new LinkedHashSet<>();
 
