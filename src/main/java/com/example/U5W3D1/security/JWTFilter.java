@@ -42,9 +42,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         Employee found = employeeSRV.getEmployeeById(UUID.fromString(employeeId));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
 
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }

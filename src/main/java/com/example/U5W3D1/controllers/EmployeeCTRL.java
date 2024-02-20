@@ -7,6 +7,7 @@ import com.example.U5W3D1.services.EmployeeSRV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,23 @@ public class EmployeeCTRL {
 
 
     }
+
+    @GetMapping("/me")
+    public Employee getProfile(@AuthenticationPrincipal Employee currentAuthenticatedUser) {
+        return currentAuthenticatedUser;
+    }
+
+    @PutMapping("/me")
+    public Employee getMeAndUpdate(@AuthenticationPrincipal Employee currentAuthenticatedUser, @RequestBody EmployeeDTO updatedUser) {
+        return this.employeeSRV.updateEmployeeById(updatedUser, currentAuthenticatedUser.getId());
+    }
+
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void getMeAndDelete(@AuthenticationPrincipal Employee currentAuthenticatedUser) {
+        this.employeeSRV.getEmployeeById(currentAuthenticatedUser.getId());
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
