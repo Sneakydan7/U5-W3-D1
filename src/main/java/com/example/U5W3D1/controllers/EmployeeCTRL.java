@@ -2,6 +2,7 @@ package com.example.U5W3D1.controllers;
 
 import com.example.U5W3D1.entities.Employee;
 import com.example.U5W3D1.payloads.EmployeeDTO;
+import com.example.U5W3D1.services.AuthSRV;
 import com.example.U5W3D1.services.EmployeeSRV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class EmployeeCTRL {
     @Autowired
     private EmployeeSRV employeeSRV;
+    @Autowired
+    private AuthSRV authSRV;
 
     @GetMapping
     public Page<Employee> getEmployees(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "id") String orderBy) {
@@ -33,7 +36,7 @@ public class EmployeeCTRL {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee saveEmployee(@RequestBody EmployeeDTO newEmployee) {
-        return this.employeeSRV.saveEmployee(newEmployee);
+        return this.authSRV.saveEmployee(newEmployee);
 
     }
 

@@ -35,11 +35,6 @@ public class EmployeeSRV {
         return employeeDAO.findById(id).orElseThrow(() -> new UUIDNotFoundException(id));
     }
 
-    public Employee saveEmployee(EmployeeDTO newEmployee) {
-        return employeeDAO.save(new Employee(newEmployee.getUsername(), newEmployee.getName(),
-                newEmployee.getSurname(), newEmployee.getEmail(), newEmployee.getPassword()));
-    }
-
 
     public Employee updateEmployeeById(EmployeeDTO updatedEmployee, UUID id) {
 

@@ -1,14 +1,17 @@
 package com.example.U5W3D1.entities;
 
+import com.example.U5W3D1.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "employees")
@@ -16,7 +19,8 @@ import java.util.UUID;
 @Getter
 @ToString
 @NoArgsConstructor
-public class Employee {
+@JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "username", "accountNonLocked", "enabled"})
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -27,6 +31,8 @@ public class Employee {
     private String surname;
     private String email;
     private String image;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "employee", orphanRemoval = true)
@@ -38,5 +44,31 @@ public class Employee {
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

@@ -28,7 +28,7 @@ public class AuthCTRL {
 
     @PostMapping("/register")
     private Employee register(@RequestBody EmployeeDTO payload) {
-        return this.employeeSRV.saveEmployee(payload);
+        return this.authSRV.saveEmployee(payload);
     }
 
 }
